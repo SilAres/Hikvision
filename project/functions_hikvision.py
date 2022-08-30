@@ -5,8 +5,26 @@ def reboot(serv, login, passw):
     cam = Client('http://'+serv, login, passw , timeout=30)
     cam.System.reboot(method='PUT')
 
-
+def hikvision_modify_date_seting(serv, login, passw):
+    cam = Client('http://'+serv, login, passw, timeout=30)
+    url_cam = cam.ContentMgmt.InputProxy.channels(method='get')
+    for i in range(len(url_cam["InputProxyChannelList"]["InputProxyChannel"])) :
+        try:
+            url_dtd = cam.System.Video.inputs.channels[i+1].overlays.dateTime(method='get', present='text')
+            dateStyle_pattern ="<dateStyle>.*</dateStyle>"
+            dateStyle ="<dateStyle>DD-MM-YYYY</dateStyle>"
+            url_dtd = re.sub(dateStyle_pattern, dateStyle, url_dtd)
+            url_dtd = cam.System.Video.inputs.channels[i+1].overlays.dateTime(method='put', data=url_dtd)
+        except :
+            pass
 def data_collection(serv, login, passw):
+    """
+    Заменить все сслыки на get("value", {})
+    :param serv:
+    :param login:
+    :param passw:
+    :return:
+    """
 
     UserHik1 = []
     try:

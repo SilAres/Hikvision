@@ -1,9 +1,10 @@
-from hikvisionapi import Client
 import pandas as pd
 
 from date.SecureString import login, passw
-import functions_hikvision
+
 import auxiliary_functions
+
+from functions_hikvision import reboot, hikvision_modify_date_seting, data_collection
 
 filename = "hikvision.csv"
 df = pd.DataFrame([["Регистратор", "deviceName", "devicemodel", "device_firmwareVersion", "device_firmwareReleasedDate",
@@ -33,7 +34,7 @@ print(Title["description"])
 
 for serv in registrators:
     print("Start checking the video recorder : " + serv)
-    datereg = functions_hikvision.data_collection(serv, login, passw)
+    datereg = data_collection(serv, login, passw)
     df = df.append(pd.DataFrame(datereg), ignore_index=True)
     print("End checking the video recorder : " + serv)
 df.to_csv(filename, sep=';', encoding="utf-8-sig", index=False, header=0)
