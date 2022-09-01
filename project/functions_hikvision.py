@@ -195,6 +195,7 @@ def data_collection(serv, login, passw):
         df = df.append(pd.DataFrame(datereg), ignore_index=True)
     return df
 
+
 def hikvision_motionDetection(serv, login, passw):
     """
 
