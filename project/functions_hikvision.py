@@ -96,10 +96,8 @@ def data_collection(serv, login, passw):
     except:
         pass
 
-    # for i in range(1) :
     for i in range(len(url_cam["InputProxyChannelList"]["InputProxyChannel"])):
         k = int(url_cam["InputProxyChannelList"]["InputProxyChannel"][i]["id"])
-        # print("i=",i)
         video_codec_type_sub = ""
         video_resolution_width_sub = ""
         video_resolution_height_sub = ""
@@ -120,9 +118,7 @@ def data_collection(serv, login, passw):
         grid_map = ""
         daysrec = [[], [], [], [], [], [], []]
         try:
-            # print("k=",k)
             url_main = cam.Streaming.channels[k * 100 + 1](method='get')
-            # print("k=",k)
             video_codec_type_main = url_main["StreamingChannel"]["Video"]["videoCodecType"]
             video_resolution_width_main = url_main["StreamingChannel"]["Video"]["videoResolutionWidth"]
             video_resolution_height_main = url_main["StreamingChannel"]["Video"]["videoResolutionHeight"]
@@ -205,9 +201,9 @@ def hikvision_motionDetection(serv, login, passw):
     :return: Изменения параметров маски и motionDetection
     - sensitivityLevel -100 максимальная чувсствительность
     """
-    cam = Client('http://'+serv, login, passw , timeout=30)
+    cam = Client('http://'+serv, login, passw, timeout=30)
     url_cam = cam.ContentMgmt.InputProxy.channels(method='get')
-    for i in range(len(url_cam.get("InputProxyChannelList").get("InputProxyChannel"))) :
+    for i in range(len(url_cam.get("InputProxyChannelList").get("InputProxyChannel"))):
         try:
             k = int(url_cam["InputProxyChannelList"]["InputProxyChannel"][i]["id"])
             url_md = cam.System.Video.inputs.channels[k].motionDetection(method='get', present='text')
@@ -231,6 +227,7 @@ def hikvision_motionDetection(serv, login, passw):
             cam.System.Video.inputs.channels[k].motionDetection(method='put', data=url_md)
         except:
             print(f'Во время изменения камеры произошла ошибка')
+
 
 def cam_setting_main(serv, login, passw):
     """
